@@ -162,7 +162,13 @@ def cosine_similarity(embedding: torch.nn.Embedding, valid_size: int = 16, valid
     """
 
     # TODO
-    valid_examples: torch.Tensor = None
-    similarities: torch.Tensor = None
+    valid_examples: torch.Tensor = torch.LongTensor(random.sample(range(valid_window), valid_size)).to(device)
+
+    embed_vectors = embedding.weight.to(device)
+    valid_vectors = embed_vectors[valid_examples]
+    norm_a = valid_vectors.norm(dim=1, keepdim=True)  # shape: (valid_size, 1)
+    norm_b = embed_vectors.norm(dim=1, keepdim=True)  # shape: (total_vocab, 1)
+
+    similarities: torch.Tensor = (valid_vectors @ embed_vectors.T)/ (norm_a * norm_b.T)
 
     return valid_examples, similarities
