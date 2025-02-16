@@ -166,8 +166,8 @@ def cosine_similarity(embedding: torch.nn.Embedding, valid_size: int = 16, valid
 
     embed_vectors = embedding.weight.to(device)
     valid_vectors = embed_vectors[valid_examples]
-    norm_a = valid_vectors.norm(dim=1, keepdim=True)  # shape: (valid_size, 1)
-    norm_b = embed_vectors.norm(dim=1, keepdim=True)  # shape: (total_vocab, 1)
+    norm_a = valid_vectors.norm(dim=1, keepdim=True)  
+    norm_b = embed_vectors.norm(dim=1, keepdim=True)  
 
     similarities: torch.Tensor = (valid_vectors @ embed_vectors.T)/ (norm_a * norm_b.T)
 
